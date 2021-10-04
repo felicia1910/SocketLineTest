@@ -11,16 +11,16 @@ app.use(cors());
 //api port
 const port = process.env.PORT || 4000;
 // Add Access Control Allow Origin headers
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", " * ");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", " * ");
+//     res.header(
+//       "Access-Control-Allow-Headers",
+//       "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     next();
+// });
 
-app.post('/webhook', bot.bot.parser());
+// app.post('/webhook', bot.bot.parser());
 
 const server = http.createServer(app);
 //server.listen(process.env.PORT || 4040)
@@ -64,9 +64,9 @@ let messages = [
 //用 socket 方式取得
 io.on('connection', function (socket) {
     console.log('user connected')
-    socket.emit("allMessage", all)
-    let test=bot.getBot();
-    console.log('test??',test)
+    socket.emit("allMessage", messages)
+    // let test=bot.getBot();
+    // console.log('test??',test)
     socket.on("sendMessage", function (mes) {
         console.log('??', mes)
         //找到有沒有這個人的聊天紀錄
