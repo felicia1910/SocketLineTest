@@ -19,14 +19,6 @@ server.listen(port, function () {
     console.log('API listening on *:' + port);
 })
 
-app.post('/webhook', bot.bot.parser());
-//>V3後會有cors的問題
-const io = socketio(server, {
-    cors: {
-        origin: '*',
-    }
-});
-
 // Add Access Control Allow Origin headers
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", " * ");
@@ -35,6 +27,14 @@ app.use((req, res, next) => {
       "Origin, X-Requested-With, Content-Type, Accept"
     );
     next();
+});
+
+app.post('/webhook', bot.bot.parser());
+//>V3後會有cors的問題
+const io = socketio(server, {
+    cors: {
+        origin: '*',
+    }
 });
 
 console.log("Server socket 4040 , api 4000")
