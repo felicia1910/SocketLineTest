@@ -19,7 +19,7 @@ server.listen(port, function () {
     console.log('API listening on *:' + port);
 })
 
-//app.post('/webhook', bot.bot.parser());
+app.post('/webhook', bot.bot.parser());
 //>V3後會有cors的問題
 const io = socketio(server, {
     cors: {
