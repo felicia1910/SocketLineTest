@@ -28,14 +28,14 @@ const io = socketio(server, {
 });
 
 // Add Access Control Allow Origin headers
-// app.use((req, res, next) => {
-//     res.setHeader("Access-Control-Allow-Origin", " * ");
-//     res.header(
-//       "Access-Control-Allow-Headers",
-//       "Origin, X-Requested-With, Content-Type, Accept"
-//     );
-//     next();
-// });
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", " * ");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
 
 console.log("Server socket 4040 , api 4000")
 
