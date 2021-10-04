@@ -10,15 +10,6 @@ app.use(cors());
 
 //api port
 const port = process.env.PORT || 4000;
-
-//http & socket port
-const server = http.createServer(app);
-//server.listen(process.env.PORT || 4040)
-server.listen(port, function () {
-    console.log('bot', bot);
-    console.log('API listening on *:' + port);
-})
-
 // Add Access Control Allow Origin headers
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", " * ");
@@ -30,6 +21,13 @@ app.use((req, res, next) => {
 });
 
 app.post('/webhook', bot.bot.parser());
+
+const server = http.createServer(app);
+//server.listen(process.env.PORT || 4040)
+server.listen(port, function () {
+    console.log('bot', bot);
+    console.log('API listening on *:' + port);
+})
 //>V3後會有cors的問題
 const io = socketio(server, {
     cors: {
