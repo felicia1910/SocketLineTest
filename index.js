@@ -20,10 +20,11 @@ const port = process.env.PORT || 4000;
 //     next();
 // });
 
-// app.post('/webhook', bot.bot.parser());
+
 
 const server = http.createServer(app);
-//server.listen(process.env.PORT || 4040)
+
+server.post('/webhook', bot.bot.parser());
 server.listen(port, function () {
     console.log('bot', bot);
     console.log('API listening on *:' + port);
