@@ -1,16 +1,10 @@
 'use strict';
-const linebot = require('linebot');
 const express = require('express');
 const BodyParser = require('body-parser');
+const socketio = require('socket.io');
 const cors = require('cors');
 //引入自訂義
 const bot = require('./line/index');
-// Line Channel info
-// const bot = linebot({
-//     channelId: '1656330672',//process.env.channelId,
-//     channelSecret: '2036133d57ee3e0f6f318423c0000ee9',
-//     channelAccessToken: 'htgAj7q1TMGeyxIzhHw7ExEXT00eg5UuLzHzLiFz+OeeN7U/2+IZtX2i9YFHQcLszMd+Cvmt3r8/1wZTmKznGz5vC54lQU/VT3msf/HZt8dG5Ny3L3dKkR+qE/rsbPGmiMpXB6SpA9sRRCQVVPhFCAdB04t89/1O/w1cDnyilFU=',
-// });
 
 const linebotParser = bot.bot.parser();
 const app = express();
@@ -32,14 +26,30 @@ app.post('/broadcast', (req, res) => {
 
 app.listen(port);
 
-// echo user message
-// bot.on('message', function (event) {
-//   // get user message from `event.message.text`
-//   // reply same message
-//   var replyMsg = `${event.message.text}`;
-//   event.reply(replyMsg).then(function (data) {
-//     console.log('ok')
-//   }).catch(function (error) {
-//     console.error(error)
-//   });
-// });
+//>V3後會有cors的問題
+const io = socketio(app, {
+    cors: {
+        origin: '*',
+    }
+});
+//用 socket 方式取得
+io.on('connection', function (socket) {
+    console.log('user connected')
+    socket.emit("allMessage", messages)
+    // let test=bot.getBot();
+    // console.log('test??',test)
+    socket.on("sendMessage", function (mes) {
+        console.log('??', mes)
+        //找到有沒有這個人的聊天紀錄
+        // let find = all.map(e => { return e.name }).indexOf(mes.name);
+        // console.log('find', find);
+        // if (find !== -1) {
+        //     all[find].mes.push(mes)
+        // } else {
+        //     all.push({ name: mes.name, mes: [mes] })
+        // }
+        // console.log('all', all)
+        // io.emit("newMessage", all)
+    })
+
+})
