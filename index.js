@@ -26,7 +26,7 @@ app.post('/broadcast', (req, res) => {
 
 app.listen(port);
 
-const server = http.createServer(app);
+//const server = http.createServer(app);
 //>V3後會有cors的問題
 // const io = socketio(server, {
 //     cors: {
