@@ -18,12 +18,14 @@ const linebotParser = bot.bot.parser();
 server.post('/webhook', linebotParser);
 // a http endpoint for trigger broadcast
 server.post('/broadcast', (req, res) => {
+
     bot.bot.broadcast(req.body.message).then(() => {
         res.send('broadcast ok');
     }).catch(function (error) {
         res.send('broadcast fail');
     });
 });
+
 
 server.listen(port, function () {
     console.log('bot', bot);
