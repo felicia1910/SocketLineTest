@@ -38,14 +38,16 @@ const getBot = () => {
         if (ee) {
           sendMessage({
             type:event.message.type,
-            id:event.message.id,
+            textId:event.message.id,
             message: event.message.text,
             name: ee.userName,
-            id: event.source.userId,
+            userId: event.source.userId,
             pic: ee.pic,
             timestamp: event.timestamp,
             time:new Date(event.timestamp),
-            st:ee.st
+            st:ee.st,
+            which:1,
+            user:true
           });
           event.reply(event.message.text + '成功');
         }
