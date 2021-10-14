@@ -15,6 +15,7 @@ const client = new line.Client({
 let socket = null;
 const socketClient = () => {
   socket = io("https://socketio-server-testing.herokuapp.com/");
+  //socket = io("http://localhost:4010/");
 };
 
 const sendMessage = (mes) => {
@@ -54,16 +55,8 @@ const getBot = () => {
       })
 
     }
-    getMes = {
-      userText: {
-        type: event.message.type,
-        text: event.message.text,
-        timestamp: event.source.timestamp,
-        user: getUser
-      }
-    }
+
   })
-  return getMes
 }
 
 const catchUser = (id) => new Promise((resolve, reject) => {
