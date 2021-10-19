@@ -76,13 +76,19 @@ const getBot = () => {
       })
     } else if (event.message.type === 'image') {
 
-      const downloadPath = path.join(__dirname, 'downloaded', `${event.message.id}.jpg`);
+      const downloadPath = path.join(__dirname, 'downloaded', `${event.message.id}.png`);
       downloadContent(event.message.id, downloadPath)
         .then((downloadPath) => {
-          return {
-            originalContentUrl: baseURL + '/downloaded/' + path.basename(downloadPath),
-          }
-          event.reply('下載圖片成功');
+          //'http://localhost:4000/' + baseURL + '/downloaded/' + path.basename(downloadPath)
+          catchUser(event.source.userId).then(ee => {
+            let getObj = doObj(event, ee);
+            sendMessage({
+              ...getObj,
+              message: Buffer.from(downloadPath).toString('base64'),
+            });
+            event.reply('下載圖片成功');
+          })
+
         });
     }
 
@@ -93,8 +99,10 @@ const downloadContent=(messageId, downloadPath)=> {
   return client.getMessageContent(messageId)
     .then((stream) => new Promise((resolve, reject) => {
       const writable = fs.createWriteStream(downloadPath);
+      console.log('stream',stream)
       stream.pipe(writable);
-      stream.on('end', () => resolve(downloadPath));
+      //stream.on('end', () => resolve(downloadPath));
+      stream.on('data', ee => resolve(ee));
       stream.on('error', reject);
     }));
 }
