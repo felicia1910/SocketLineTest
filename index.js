@@ -2,6 +2,7 @@
 const express = require('express');
 const BodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs');
 //引入自訂義
 const bot = require('./line/index');
 
@@ -27,12 +28,19 @@ app.post('/broadcast', (req, res) => {
 app.post('/pushMes', (req, res) => {
   console.log('!!!!!!!!!!req!!!!!!!!!', req.body);
   res.send({
-    isSuccess:true,
-    mes:'傳送成功!'
+    isSuccess: true,
+    mes: '傳送成功!'
   });
   bot.client.pushMessage(req.body.id,
     { type: 'text', text: req.body.mes }
   );
+});
+
+app.get('/getImg', (req, res) => {
+  fs.readFile(`./line/downloaded/${req.query.name}.${req.query.type}`,(err,data)=>{
+    if (err) throw err; // Fail if the file can't be read.
+    res.end(data);
+  });
 });
 
 app.listen(port);
