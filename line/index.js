@@ -20,8 +20,8 @@ const client = new line.Client({
 
 let socket = null;
 const socketClient = () => {
-  //socket = io("https://socketio-server-testing.herokuapp.com/");
-  socket = io("http://localhost:4010/");
+  socket = io("https://socketio-server-testing.herokuapp.com/");
+  //socket = io("http://localhost:4010/");
 };
 
 const sendMessage = (mes) => {
