@@ -9,7 +9,7 @@ const bot = require('./line/index');
 const linebotParser = bot.bot.parser();
 const app = express();
 //轉html file
-app.engine('html', require('ejs').renderFile);//需放名為view的資料夾
+//app.engine('html', require('ejs').renderFile);//需放名為view的資料夾
 
 
 app.post('/linewebhook', linebotParser, (req, res) => {
@@ -24,10 +24,10 @@ app.use(BodyParser.json());
 const port = process.env.PORT || 4000;
 
 
-app.get('/link', function(req, res){
-  let url=port==4000?'https://localhost:4000/callback':url+'/callback';
-  res.render('Link/linkPage.html',{url: url});
-});
+// app.get('/link', function(req, res){
+//   let url=port==4000?'https://localhost:4000/callback':url+'/callback';
+//   res.render('Link/linkPage.html',{url: url});
+// });
 app.get("/link",(req,res)=>{
   let url=port==4000?'https://localhost:4000/callback':url+'/callback';
   res.sendFile(path.join(__dirname, '/views/Link/linkPage.html'),{url: url});
