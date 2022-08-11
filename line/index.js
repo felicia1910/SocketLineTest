@@ -3,7 +3,6 @@ const line = require('@line/bot-sdk');
 const { io } = require("socket.io-client");
 //這邊要注意fetch版本太高會有問題
 const fs = require('fs');
-const cp = require('child_process');
 const path = require('path');
 const fileType = require('file-type');
 const fetch = require('node-fetch');
@@ -20,8 +19,8 @@ const client = new line.Client({
 
 let socket = null;
 const socketClient = () => {
-  socket = io("https://socketio-server-testing.herokuapp.com/");
-  //socket = io("http://localhost:4010/");
+  //socket = io("https://socketio-server-testing.herokuapp.com/");
+  socket = io("http://localhost:4010/");
 };
 
 const sendMessage = (mes) => {

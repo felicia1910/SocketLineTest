@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="myFunction()">link line</button>
+</body>
+<script>
+    const myFunction = () => {
+        //以下是API文件中提及必寫的主體参數。而以下這個產品資料是六角學院提供的。
+        let body = {};
+        let headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            //"Authorization": `Bearer ${token}`,
+        }
+
+        fetch('https://api.line.me/oauth2/v2.1/token', {
+            method: "POST",
+            headers: headers,
+            //別忘了把主體参數轉成字串，否則資料會變成[object Object]，它無法被成功儲存在後台
+            body: JSON.stringify(body)
+        })
+            .then(response => response.json())
+            .then(json => console.log('test', json));
+    }
+
+</script>
+
+</html>
