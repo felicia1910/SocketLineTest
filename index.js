@@ -90,9 +90,9 @@ app.get("/link",(req,res)=>{
 })
 
 app.get("/linkAuth",(req,res)=>{
-  res.end("wait...")
   console.log('querystring',querystring);
   linkLineFun();
+  res.end("wait...")
   //res.sendFile(path.join(__dirname, '/views/Link/lineAuth.js'));
 })
 
