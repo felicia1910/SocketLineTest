@@ -9,17 +9,11 @@
 </head>
 
 <body>
-    <button onclick="clickFun()">test</button>
     <button onclick="linkLine()">link line</button>
 </body>
 <script>
-    let callbackUrl="<%= url %>";
-    //const Url=''
-    const clickFun=()=>{
-        console.log('???')
-        let name = "<%= url %>"
-        console.log('name',name)
-    };
+    let callbackUrl="https://socket-line-test.herokuapp.com/callback";
+
     const linkLine = () => {
         
         let URL = 'https://access.line.me/oauth2/v2.1/authorize?';

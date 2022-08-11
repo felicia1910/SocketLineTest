@@ -28,7 +28,10 @@ app.get('/link', function(req, res){
   let url=port==4000?'https://localhost:4000/callback':url+'/callback';
   res.render('Link/linkPage.html',{url: url});
 });
-
+app.get("/link",(req,res)=>{
+  let url=port==4000?'https://localhost:4000/callback':url+'/callback';
+  res.sendFile(path.join(__dirname, '/views/Link/linkPage.html'),{url: url});
+})
 // a http endpoint for trigger broadcast
 app.get("/callback",(req, res, next)=> {
   res.end("wait...")
