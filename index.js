@@ -11,7 +11,7 @@ const bot = require('./line/index');
 const linebotParser = bot.bot.parser();
 const app = express();
 //轉html file
-app.engine('html', require('ejs').renderFile);//需放名為view的資料夾
+//app.engine('html', require('ejs').renderFile);//需放名為view的資料夾
 
 
 app.post('/linewebhook', linebotParser, (req, res) => {
@@ -25,15 +25,15 @@ app.use(BodyParser.json());
 
 const port = process.env.PORT || 4000;
 
-app.get('/link', function(req, res){
-  res.render('Link/linkPage.html');
-});
-
-
-// app.get("/link",(req,res)=>{
-//   //res.redirect("/views/Link/linkPage.html");
-//   res.sendFile(path.join(__dirname, '/views/Link/linkPage.html'));
+// app.get('/link', function(req, res){
+//   res.render('Link/linkPage.html');
 // });
+
+
+app.get("/link",(req,res)=>{
+  //res.redirect("/views/Link/linkPage.html");
+  res.sendFile(path.join(__dirname, '/views/Link/linkPage.html'));
+});
 
 
 // app.get("/linkAuth",(req,res)=>{
