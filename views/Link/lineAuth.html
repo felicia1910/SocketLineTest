@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    wait...
+</body>
+<script>
+    const stringifyPrimitive = (v) => {
+        switch (typeof v) {
+            case 'string':
+                return v;
+
+            case 'boolean':
+                return v ? 'true' : 'false';
+
+            case 'number':
+                return isFinite(v) ? v : '';
+
+            default:
+                return '';
+        }
+    };
+
+    //stringify
+    const queryString = (obj, sep, eq, name) => {
+        sep = sep || '&';
+        eq = eq || '=';
+        if (obj === null) {
+            obj = undefined;
+        }
+
+        if (typeof obj === 'object') {
+            return Object.keys(obj).map(function (k) {
+                var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+                if (Array.isArray(obj[k])) {
+                    return obj[k].map(function (v) {
+                        return ks + encodeURIComponent(stringifyPrimitive(v));
+                    }).join(sep);
+                } else {
+                    return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
+                }
+            }).filter(Boolean).join(sep);
+
+        }
+
+        if (!name) return '';
+        return encodeURIComponent(stringifyPrimitive(name)) + eq +
+            encodeURIComponent(stringifyPrimitive(obj));
+    };
+
+    const linkLineFun = () => {
+
+        let callbackUrl = 'https://e8da-2001-b011-381b-7615-b820-b6a5-7e87-952c.jp.ngrok.io/linkAuth';
+        console.log('window?', window.location)
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log('urlParams', urlParams)
+        if (urlParams.has('state') && urlParams.has('code')) {
+            const state = urlParams.get('state');
+            const code = urlParams.get('code');
+            console.log('get=>', state, code)
+            if (state === 'State') {
+                let getTokenUrl = `https://api.line.me/oauth2/v2.1/token?`;
+                console.log('getTokenUrl', getTokenUrl)
+                const getTokenBody = queryString({
+                    grant_type: 'authorization_code',
+                    code,
+                    redirect_uri: callbackUrl,
+                    client_id: 1657376867,
+                    client_secret: 'b486c65259765275f5e086c8acfdc1d6',
+                });
+                getTokenUrl+= `${getTokenBody}`
+                console.log('getTokenUrl ', getTokenUrl)
+                fetch(getTokenUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then((response) => {
+                    console.log(response)
+                    return response.json();
+                }).then((jsonData) => {
+                    console.log(jsonData);
+                    const token = jsonData.data.access_token;
+                    const idToken = jsonData.data.id_token;
+                    const getProfileApiUrl = 'https://api.line.me/v2/profile';
+                    //--------------------------------------------------------
+                    //continute
+                    //--------------------------------------------------------
+                    fetch(getProfileApiUrl, {
+                        method: 'GET',
+                        responseType: 'json',
+                        headers: {
+                            Authorization: `Bearer ${token}`, // Bearer 跟 token 中間有一個空格
+                        },
+                    }).then((response2) => {
+                        console.log(response2)
+                        return response2.json();
+                    }).then((jsonData2) => {
+                        alert(`line user id: ${e2.data.userId}, display name:${e2.data.displayName}`);
+                        console.log(JSON.stringify(e2));
+
+                        const getVerifyApiUrl = 'https://api.line.me/oauth2/v2.1/verify';
+                        const getVerifyBody = queryString({
+                            client_id: '1657376867',
+                            id_token: idToken,
+                        });
+                        //--------------------------------------------------------
+                        //continute
+                        //--------------------------------------------------------
+                        fetch(getVerifyApiUrl, {
+                            method: 'POST',
+                            body: JSON.stringify(getVerifyBody)
+                        }).then((response3) => {
+                            console.log(response3)
+                            return response3.json();
+                        }).then((jsonData3) => {
+                            alert(`line email: ${jsonData3.data.email}`);
+                            console.log(JSON.stringify(jsonData3));
+                        }).catch((error) => {
+                            console.log(`錯誤: ${error}`);
+                        });
+                        //--------------------------------------------------------
+                    }).catch((error) => {
+                        console.log(`錯誤: ${error}`);
+                    });
+                    //--------------------------------------------------------
+                }).catch((err) => {
+                    console.log('錯誤:', err);
+                })
+                //++++++++++++++++++++++++++++++++++++++++++++++
+                //++++++++++++++++++++++++++++++++++++++++++++++
+                // axios.post(getTokenUrl, getTokenBody).then((e1) => {
+                //     const token = e1.data.access_token;
+                //     const idToken = e1.data.id_token;
+                //     console.log(e1);
+                //     const getProfileApiUrl = 'https://api.line.me/v2/profile';
+                //     axios({
+                //         method: 'GET',
+                //         url: getProfileApiUrl,
+                //         responseType: 'json', // responseType 也可以寫在 header 裡面
+                //         headers: {
+                //             Authorization: `Bearer ${token}`, // Bearer 跟 token 中間有一個空格
+                //         },
+                //     }).then((e2) => {
+                //         alert(`line user id: ${e2.data.userId}, display name:${e2.data.displayName}`);
+                //         console.log(JSON.stringify(e2));
+
+                //         const getVerifyApiUrl = 'https://api.line.me/oauth2/v2.1/verify';
+                //         const getVerifyBody = queryString({
+                //             client_id: '1657376867',
+                //             id_token: idToken,
+                //         });
+                //         axios.post(getVerifyApiUrl, getVerifyBody).then((e3) => {
+                //             alert(`line email: ${e3.data.email}`);
+                //             console.log(JSON.stringify(e3));
+                //         }).catch((error) => {
+                //             console.log(`錯誤: ${error}`);
+                //         });
+                //     }).catch((error) => {
+                //         console.log(`錯誤: ${error}`);
+                //     });
+                // })
+                //     .catch((error) => {
+                //         console.log(error);
+                //         alert(error);
+                //     });
+            }
+        }
+    };
+
+    linkLineFun();
+
+</script>
+
+</html>
